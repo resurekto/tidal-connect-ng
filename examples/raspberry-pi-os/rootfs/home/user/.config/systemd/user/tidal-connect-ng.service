@@ -1,0 +1,30 @@
+[Unit]
+Description=TIDAL Connect receiver
+# Plays to ALSA's "default" device, which pipewire-alsa routes into this user's
+# PipeWire session (that session owns the audio device).
+After=pipewire.service wireplumber.service
+Wants=pipewire.service
+
+[Service]
+# device.pem: the device certificate + private key, owned by this user, mode 600
+# (README.md, "Certificate"). The client id belongs to that certificate (README.md,
+# "Client id").
+#
+# Optional switches (README.md, "Hi-res streaming" and "Volume control"):
+#   --python-tidal-path /path/to/python-tidal-checkout
+#   --python-tidal-session /home/user/.config/tidal-connect-ng/tidal-session.json
+#   --python-bin /path/to/venv/bin/python
+#   --volume mixer|software|off   (default mixer: the OS mixer, here PipeWire's, mapped to
+#                                  the DAC by ~/.config/wireplumber/ and ~/.config/alsa-card-profile/)
+ExecStart=/usr/local/bin/tidal-connect-ng \
+  --tc-certificate-path /usr/local/etc/tidal-connect-ng/cert/device.pem \
+  --clientid <client id> \
+  --friendly-name "TCNG Receiver" \
+  --model-name "Raspberry Pi" \
+  --playback-device default \
+  --log-level 3
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=default.target

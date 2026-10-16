@@ -1,0 +1,16 @@
+/build/
+
+# macOS
+.DS_Store
+._*
+
+# Windows
+Thumbs.db
+desktop.ini
+# Visual Studio's "Open Folder" on CMakeLists.txt
+/.vs/
+/out/
+
+# Linux
+*~
+.directory
